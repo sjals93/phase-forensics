@@ -1,0 +1,57 @@
+# PhaseForensics Default Configuration
+
+# DT-CWT Parameters
+dtcwt:
+  nlevels: 5                    # Decomposition levels (3-7)
+  biort: 'near_sym_b'          # Biorthogonal wavelet
+  qshift: 'qshift_b'           # Quarter-shift wavelet
+  ndirs: 6                      # Number of directions (fixed for DT-CWT)
+
+# Phase Coherence Metrics
+metrics:
+  ispc:
+    enabled: true
+    circular_variance: true     # Use circular variance
+    scales: [1, 2, 3, 4]       # Scale pairs for inter-scale coherence
+  cdpgc:
+    enabled: true
+    gradient_method: 'sobel'    # 'sobel' or 'finite_diff'
+    patch_size: 16              # Local patch size for gradient consistency
+
+# GGD Fitting
+ggd:
+  method: 'mle'                 # 'mle' or 'mom' (method of moments)
+  initial_beta: 1.0             # Initial shape parameter
+  max_iter: 100                 # MLE optimization iterations
+  fallback_beta: 1.0            # Fallback if fitting fails (Laplacian)
+
+# Detection
+detection:
+  method: 'neyman_pearson'      # 'neyman_pearson', 'gmm', 'kde', 'emd'
+  fpr_targets: [0.01, 0.05, 0.10]  # Target false positive rates
+  combine_method: 'fisher_lda'  # How to combine ISPC and CDPGC scores
+
+# Data
+data:
+  real_calibration:
+    sources:
+      - '/mnt/storage/datasets/GeneralDatasets/COCO/val2017'
+      - '/mnt/storage/datasets/GeneralDatasets/ImageNet/ILSVRC2012_val'
+    n_samples: 5000
+  image_size: null              # null = original size
+
+# Evaluation
+eval:
+  metrics: ['auroc', 'ap', 'tpr_at_fpr']
+  tpr_fpr_thresholds: [0.01, 0.05]
+
+# Processing
+processing:
+  num_workers: 8                # Multiprocessing workers
+  batch_size: 64                # Images per batch (for data loading)
+
+# Output
+output:
+  save_maps: true               # Save ISPC/CDPGC spatial maps
+  save_histograms: true         # Save feature histograms
+  save_ggd_params: true         # Save fitted GGD parameters
