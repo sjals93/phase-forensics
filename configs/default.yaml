@@ -33,12 +33,33 @@ detection:
 
 # Data
 data:
+  base_path: /mnt/storage/datasets
   real_calibration:
     sources:
-      - '/mnt/storage/datasets/GeneralDatasets/COCO/val2017'
-      - '/mnt/storage/datasets/GeneralDatasets/ImageNet/ILSVRC2012_val'
+      - '/mnt/storage/datasets/DeepfakeDetection/Image/FFHQ/images/'
     n_samples: 5000
   image_size: null              # null = original size
+  real:
+    ffhq: /mnt/storage/datasets/DeepfakeDetection/Image/FFHQ/images/
+  fake:
+    sd_v1.1: /mnt/storage/datasets/DeepfakeDetection/AI_Generated/CompVis-stable-diffusion-v1-1-ViT-L-14-openai/
+    sd_v1.5: /mnt/storage/datasets/DeepfakeDetection/AI_Generated/runwayml-stable-diffusion-v1-5-ViT-L-14-openai/
+    sd_v2.1: /mnt/storage/datasets/DeepfakeDetection/AI_Generated/stabilityai-stable-diffusion-2-1-base-ViT-H-14-laion2b_s32b_b79k/
+    kandinsky_2.1: /mnt/storage/datasets/DeepfakeDetection/AI_Generated/kandinsky-community-kandinsky-2-1-ViT-L-14-openai/
+    midjourney_v4: /mnt/storage/datasets/DeepfakeDetection/AI_Generated/midjourney-v4/
+    midjourney_v5: /mnt/storage/datasets/DeepfakeDetection/AI_Generated/midjourney-v5/
+    midjourney_v5.1: /mnt/storage/datasets/DeepfakeDetection/AI_Generated/midjourney-v5-1/
+
+# Pilot Study
+pilot_study:
+  n_samples: 100
+  target_size: [256, 256]
+  go_threshold: 0.5
+  go_min_generators: 5
+  total_generators: 7
+  compression_test:
+    enabled: true
+    quality_factors: [95, 85, 75, 50]
 
 # Evaluation
 eval:
@@ -49,6 +70,15 @@ eval:
 processing:
   num_workers: 8                # Multiprocessing workers
   batch_size: 64                # Images per batch (for data loading)
+  target_size: [256, 256]
+  normalize: true
+
+# Notification
+notification:
+  enabled: true
+  email: sjals93@gmail.com
+  smtp_server: smtp.gmail.com
+  smtp_port: 587
 
 # Output
 output:
